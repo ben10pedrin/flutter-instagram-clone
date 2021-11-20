@@ -12,35 +12,10 @@ class PostList extends StatefulWidget {
 
 class _PostListState extends State<PostList> {
   var db = FirebaseFirestore.instance;
-  var posts;
+  var posts = ['1'];
 
   void initState() {
     super.initState();
-    getPosts();
-  }
-
-  void getPosts() {
-    db
-        .collection('posts')
-        .get()
-        .then((querySnapshot) async =>
-            await Future.wait(querySnapshot.docs.map((doc) async {
-              var mydoc = doc.data();
-              mydoc['reference'] = doc.reference;
-              mydoc['creator'] =
-                  await mydoc['creator'].get().then((doc) => doc.data());
-              mydoc['commentAmount'] = await doc.reference
-                  .collection('comments')
-                  .get()
-                  .then((querySnapshot) => querySnapshot.size);
-              return mydoc;
-            })))
-        .then((newPosts) => newPosts.toList())
-        .then((newPosts) {
-      setState(() {
-        posts = newPosts;
-      });
-    });
   }
 
   @override
@@ -52,14 +27,15 @@ class _PostListState extends State<PostList> {
                 itemCount: posts.length,
                 itemBuilder: (context, idx) {
                   return Post(
-                    username: posts[idx]['creator']['username'],
-                    profileImage: posts[idx]['creator']['profileImage'],
-                    content: posts[idx]['content'],
-                    image: posts[idx]['image'],
-                    likes: posts[idx]['likes'].length,
-                    commentAmount: posts[idx]['commentAmount'],
-                    date: posts[idx]['date'],
-                    reference: posts[idx]['reference'],
+                    username: "Pedro",
+                    profileImage:
+                        "https://im0-tub-ru.yandex.net/i?id=e67c20f98bdc512c5d3bc20c140f8fac&n=27&h=480&w=480",
+                    content: "Hello from flutter-instagram",
+                    image:
+                        "https://assets-global.website-files.com/6019e43dcfad3c059841794a/6019e43dcfad3ccc674179cf_Hero-Image.jpg",
+                    likes: 5,
+                    commentAmount: 4,
+                    date: new Timestamp.now(),
                   );
                 },
               ));

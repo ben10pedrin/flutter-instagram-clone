@@ -13,46 +13,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var db = FirebaseFirestore.instance;
-  var st = FirebaseStorage.instance;
   var controller = TextEditingController();
   var errorText;
   PickedFile? imageFile;
-
-  Future<void> createUser() async {
-    File file;
-    var url;
-
-    if (imageFile != null) {
-      file = File(imageFile!.path);
-      var ref = st.ref('profileImages/${file.path.split('/').last}');
-      await ref.putFile(file);
-      url = await ref.getDownloadURL();
-    } else {
-      url =
-          'https://firebasestorage.googleapis.com/v0/b/instaclone-9cc81.appspot.com/o/profileImages%2FdefaultProfile.png?alt=media&token=526d3075-7bcf-4150-bfb3-6e60a5df7fb9';
-    }
-
-    try {
-      await db.collection('users').add({
-        'username': controller.text,
-        'profileImage': url,
-      });
-    } catch (e) {
-      setState(() {
-        errorText = 'Something failed :(';
-      });
-    }
-  }
-
-  Future<void> pickImage(ImageSource source) async {
-    PickedFile? selected = await ImagePicker()
-        .getImage(source: source, maxWidth: 720, maxHeight: 720);
-
-    setState(() {
-      imageFile = selected;
-    });
-  }
 
   void resetError() {
     setState(() {
@@ -67,8 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         errorText = 'Username cannot be empty';
       });
     } else {
-      await createUser();
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => PostPage()),
       );
@@ -128,7 +90,6 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: imageFile == null
                         ? () {
                             resetError();
-                            pickImage(ImageSource.gallery);
                           }
                         : null,
                     style: TextButton.styleFrom(primary: Colors.blue),

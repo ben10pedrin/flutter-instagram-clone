@@ -20,23 +20,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          scaffoldBackgroundColor: Colors.black, brightness: Brightness.dark),
-      home: FutureBuilder(
-          future: _initialization,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Something went wrong with firebase :('),
-              );
-            }
-            if (snapshot.connectionState == ConnectionState.done) {
-              return LoginPage();
-            }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }),
-    );
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.black, brightness: Brightness.dark),
+        home: LoginPage());
   }
 }

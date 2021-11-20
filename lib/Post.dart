@@ -21,7 +21,7 @@ class Post extends StatefulWidget {
       required this.likes,
       required this.commentAmount,
       required this.date,
-      required this.reference})
+      this.reference})
       : super(key: key);
 
   @override

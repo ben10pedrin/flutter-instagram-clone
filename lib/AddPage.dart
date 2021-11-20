@@ -15,15 +15,6 @@ class _AddPageState extends State<AddPage> {
   bool errorImg = false;
   PickedFile? imageFile;
 
-  Future<void> pickImage(ImageSource source) async {
-    PickedFile? selected = await ImagePicker()
-        .getImage(source: source, maxWidth: 720, maxHeight: 720);
-
-    setState(() {
-      imageFile = selected;
-    });
-  }
-
   void resetError() {
     setState(() {
       errorText = null;
@@ -44,7 +35,6 @@ class _AddPageState extends State<AddPage> {
     setState(() {
       errorImg = false;
     });
-    pickImage(ImageSource.gallery);
   }
 
   void submitPost() {
